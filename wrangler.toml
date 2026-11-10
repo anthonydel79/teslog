@@ -1,0 +1,32 @@
+name = "teslog"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Static dashboard. The Worker runs first so every page sits behind the login.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+# Wakes the Worker every minute; it decides whether a poll is actually due.
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "teslog"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "migrations"
+
+[vars]
+MODE = "fleet"
+TESLA_REGION = "na"
+UNITS = "mi"
+TEMP_UNIT = "F"
+BATTERY_KWH = "75"
+PRICE_HOME_KWH = "0.15"
+PRICE_SUPERCHARGER_KWH = "0.45"
+MONTHLY_BUDGET_USD = "9"
+# Secrets (set with `npx wrangler secret put NAME`, never put them here):
+#   TESLA_CLIENT_ID, TESLA_CLIENT_SECRET, DASHBOARD_PASSWORD, PUBLIC_KEY_PEM

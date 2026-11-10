@@ -1,0 +1,5 @@
+# Local development secrets for `wrangler dev`. Copy to .dev.vars (git-ignored).
+TESLA_CLIENT_ID=
+TESLA_CLIENT_SECRET=
+DASHBOARD_PASSWORD=change-me
+TESLA_REDIRECT_URI=http://localhost:8787/auth/callback

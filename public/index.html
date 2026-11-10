@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>teslog</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1 id="car-name">My Tesla</h1>
+    <div class="sub"><span id="state-badge" class="badge">…</span> <span id="last-seen"></span></div>
+  </div>
+  <div class="top-right">
+    <span id="mode-pill" class="pill"></span>
+    <a id="login" class="btn" href="/auth/login" hidden>Connect Tesla account</a>
+    <button id="refresh" class="btn">Refresh now</button>
+    <button id="theme" class="btn ghost" aria-label="Toggle theme">◐</button>
+    <a class="btn ghost" href="/logout">Sign out</a>
+  </div>
+</header>
+
+<div id="error" class="banner" hidden></div>
+<section id="setup" class="card setup" hidden></section>
+
+<main class="grid">
+  <section class="card hero">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 120 120" class="ring" aria-hidden="true">
+        <circle cx="60" cy="60" r="52" class="ring-track"/>
+        <circle cx="60" cy="60" r="52" class="ring-limit" id="ring-limit"/>
+        <circle cx="60" cy="60" r="52" class="ring-fill" id="ring-fill"/>
+      </svg>
+      <div class="ring-label">
+        <div class="big" id="soc">–</div>
+        <div class="muted">battery</div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div><div class="label">Rated range</div><div class="value" id="range">–</div></div>
+      <div><div class="label">Estimated range</div><div class="value" id="est-range">–</div></div>
+      <div><div class="label">Charge limit</div><div class="value" id="limit">–</div></div>
+    </div>
+  </section>
+
+  <section class="card live" id="live-card">
+    <h2 id="live-title">Status</h2>
+    <div id="live-body" class="live-body"></div>
+  </section>
+
+  <section class="card tiles">
+    <div class="tile"><div class="label">Odometer</div><div class="value" id="odo">–</div></div>
+    <div class="tile"><div class="label">Inside</div><div class="value" id="inside">–</div></div>
+    <div class="tile"><div class="label">Outside</div><div class="value" id="outside">–</div></div>
+    <div class="tile"><div class="label">Doors</div><div class="value" id="locked">–</div></div>
+    <div class="tile"><div class="label">Sentry</div><div class="value" id="sentry">–</div></div>
+    <div class="tile"><div class="label">Software</div><div class="value small" id="software">–</div></div>
+  </section>
+
+  <section class="card map-card wide">
+    <h2>Location <span class="muted small" id="map-caption"></span></h2>
+    <div id="map"></div>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head">
+      <h2>Battery level</h2>
+      <div class="seg" id="hist-range">
+        <button data-h="24" class="on">24h</button><button data-h="168">7d</button><button data-h="720">30d</button>
+      </div>
+    </div>
+    <div class="chart" id="soc-chart"></div>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head">
+      <h2>Last 30 days</h2>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <h3 class="chart-title" id="daily-title">Distance per day</h3>
+    <div class="chart" id="daily-chart"></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Drives</h2>
+    <div class="table-wrap"><table id="drives"><thead><tr>
+      <th>Started</th><th>Duration</th><th class="num">Distance</th><th class="num">Battery</th>
+      <th class="num">Efficiency</th><th class="num">Avg speed</th>
+    </tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card wide">
+    <h2>Charging sessions</h2>
+    <div class="table-wrap"><table id="charges"><thead><tr>
+      <th>Started</th><th>Type</th><th>Duration</th><th class="num">Battery</th>
+      <th class="num">Energy added</th><th class="num">Peak power</th><th class="num">Cost</th>
+    </tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="card wide api">
+    <h2>Fleet API usage this month</h2>
+    <div class="api-row">
+      <div><div class="label">Requests</div><div class="value" id="api-calls">–</div></div>
+      <div><div class="label">Estimated cost</div><div class="value" id="api-cost">–</div></div>
+      <div class="meter-wrap">
+        <div class="label" id="api-budget-label">Budget</div>
+        <div class="meter"><div class="meter-fill" id="api-meter"></div></div>
+      </div>
+      <div><div class="label">Poller</div><div class="value small" id="poller-phase">–</div></div>
+    </div>
+    <p class="muted small">Estimate based on the configured per-request rate. Check your real usage on developer.tesla.com.</p>
+  </section>
+</main>
+
+<div id="tooltip" class="tooltip" hidden></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="/app.js"></script>
+</body>
+</html>
